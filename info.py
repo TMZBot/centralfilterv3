@@ -31,7 +31,7 @@ ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001274359769 -1001635253104').split()]
 auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '1021404718 1103583723').split()]
 AUTH_USERS = (auth_users + ADMINS) if auth_users else []
-auth_channel = environ.get('AUTH_CHANNEL', '-1002055337615')
+auth_channel = environ.get('AUTH_CHANNEL', '-1002123323399')
 auth_grp = environ.get('AUTH_GROUP', '-1001966390226')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
@@ -48,11 +48,11 @@ COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
 IS_VERIFY = is_enabled((environ.get('IS_VERIFY', 'False')), False)
-HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/17")
-VERIFY2_URL = environ.get('VERIFY2_URL', "tnshort.net")
-VERIFY2_API = environ.get('VERIFY2_API', "1193eaac2f36e20c6b199afb34299b0745a2b6ea")
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'tnshort.net')
-SHORTLINK_API = environ.get('SHORTLINK_API', '1193eaac2f36e20c6b199afb34299b0745a2b6ea')
+HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/21")
+VERIFY2_URL = environ.get('VERIFY2_URL', "earnwithlink.com")
+VERIFY2_API = environ.get('VERIFY2_API', "14de6aaacf1601fe7b7c1de78d154dacb970dbe4")
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'earnwithlink.com')
+SHORTLINK_API = environ.get('SHORTLINK_API', '14de6aaacf1601fe7b7c1de78d154dacb970dbe4')
 IS_SHORTLINK = is_enabled((environ.get('IS_SHORTLINK', 'True')), True)
 DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '0').split()]
 MAX_B_TN = environ.get("MAX_B_TN", "5")
