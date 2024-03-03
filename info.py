@@ -48,11 +48,11 @@ COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
 IS_VERIFY = is_enabled((environ.get('IS_VERIFY', 'False')), False)
-HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/21")
-VERIFY2_URL = environ.get('VERIFY2_URL', "earnwithlink.com")
-VERIFY2_API = environ.get('VERIFY2_API', "14de6aaacf1601fe7b7c1de78d154dacb970dbe4")
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'earnwithlink.com')
-SHORTLINK_API = environ.get('SHORTLINK_API', '14de6aaacf1601fe7b7c1de78d154dacb970dbe4')
+HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/19")
+VERIFY2_URL = environ.get('VERIFY2_URL', "tnshort.net")
+VERIFY2_API = environ.get('VERIFY2_API', "1193eaac2f36e20c6b199afb34299b0745a2b6ea")
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'tnshort.net')
+SHORTLINK_API = environ.get('SHORTLINK_API', '1193eaac2f36e20c6b199afb34299b0745a2b6ea')
 IS_SHORTLINK = is_enabled((environ.get('IS_SHORTLINK', 'True')), True)
 DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '0').split()]
 MAX_B_TN = environ.get("MAX_B_TN", "5")
