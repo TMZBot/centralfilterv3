@@ -448,16 +448,16 @@ async def get_shortlink(chat_id, link):
     if 'shortlink' in settings.keys():
         URL = settings['shortlink']
     else:
-        URL = SHORTLINK_URL
+        URL = 'vipurl.in'
     if 'shortlink_api' in settings.keys():
         API = settings['shortlink_api']
     else:
-        API = SHORTLINK_API
+        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
     https = link.split(":")[0] #splitting https or http from link
     if "http" == https: #if https == "http":
         https = "https"
         link = link.replace("http", https) #replacing http to https
-    if URL == "urlshorten.in":
+    if URL == "vipurl.in":
         url = f'https://{URL}/shortLink'
         params = {
             "token": API,
@@ -496,18 +496,18 @@ async def get_shortlink(chat_id, link):
                             return f'https://{URL}/api?api={API}&link={link}'
         except Exception as e:
             logger.error(e)
-            if URL == 'urlshorten.in':
+            if URL == 'vipurl.in':
                 return f'https://{URL}/api?api={API}&url={link}'
             else:
                 return f'https://{URL}/api?api={API}&link={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
-        API = SHORTLINK_API
-        URL = SHORTLINK_URL
+        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
+        URL = 'vipurl.in'
     else:
-        API = VERIFY2_API
-        URL = VERIFY2_URL
+        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
+        URL = 'vipurl.in'
     https = link.split(":")[0]
     if "http" == https:
         https = "https"
@@ -545,7 +545,7 @@ async def get_verify_shorted_link(num, link):
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
-                        if URL == 'earnwithlink.com':
+                        if URL == 'vipurl.in':
                             return f'https://{URL}/api?api={API}&url={link}'
                         else:
                             return f'https://{URL}/api?api={API}&link={link}'
