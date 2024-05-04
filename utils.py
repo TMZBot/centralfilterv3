@@ -494,7 +494,7 @@ async def get_shortlink(chat_id, link):
                         shortened_url = data['shortenedUrl']
                         # Add the shortened URL to the final link
                         final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                        return final_link
+                        return shortened_url
                 else:
                     logger.error(f"Attempt to decode JSON with unexpected mimetype: {content_type}")
                     return None
