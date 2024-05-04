@@ -48,7 +48,7 @@ COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
 IS_VERIFY = is_enabled((environ.get('IS_VERIFY', 'False')), False)
-HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/19")
+HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', "https://t.me/central_tutorial/22")
 VERIFY2_URL = environ.get('VERIFY2_URL', "vipurl.in")
 VERIFY2_API = environ.get('VERIFY2_API', "8074c8e3aac2def688551deccad4d1256dd7008e")
 SHORTLINK_URL = environ.get('SHORTLINK_URL', 'vipurl.in')
