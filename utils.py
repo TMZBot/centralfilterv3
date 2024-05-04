@@ -463,18 +463,18 @@ async def get_shortlink(chat_id, link):
               }
 
     try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
-                    if data["status"] == "success":
-                        return data["shortenedUrl"]
-                    else:
-                        logger.error(f"Error: {data['message']}")
-                        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
-                        
-        except Exception as e:
-            logger.error(e)
-            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                data = await response.json()
+                if data["status"] == "success":
+                    return data['shortenedUrl']
+                else:
+                    logger.error(f"Error: {data['message']}")
+                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+
+    except Exception as e:
+        logger.error(e)
+        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
     else:
         url = f'https://{SHORTLINK_URL}/api'
         params = {
@@ -517,18 +517,18 @@ async def get_verify_shorted_link(num, link):
               }
 
     try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
-                    if data["status"] == "success":
-                        return data["shortenedUrl"]
-                    else:
-                        logger.error(f"Error: {data['message']}")
-                        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
-                        
-        except Exception as e:
-            logger.error(e)
-            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                data = await response.json()
+                if data["status"] == "success":
+                    return data['shortenedUrl']
+                else:
+                    logger.error(f"Error: {data['message']}")
+                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+
+    except Exception as e:
+        logger.error(e)
+        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
     else:
         url = f'https://{SHORTLINK_URL}/api'
         params = {'api': SHORTLINK_API,
