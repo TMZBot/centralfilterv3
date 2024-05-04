@@ -445,14 +445,14 @@ def humanbytes(size):
 
 async def get_shortlink(chat_id, link):
     settings = await get_settings(chat_id) #fetching settings for group
-    if 'shortlink' in settings.keys():
+    '''if 'shortlink' in settings.keys():
         URL = settings['shortlink']
     else:
         URL = SHORTLINK_URL
     if 'shortlink_api' in settings.keys():
         API = settings['shortlink_api']
     else:
-        API = SHORTLINK_API
+        API = SHORTLINK_API'''
     https = link.split(":")[0] #splitting https or http from link
     if "http" == https: #if https == "http":
         https = "https"
@@ -470,11 +470,11 @@ async def get_shortlink(chat_id, link):
                     return data['shortenedUrl']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
 
     except Exception as e:
         logger.error(e)
-        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
     else:
         url = f'https://{SHORTLINK_URL}/api'
         params = {
@@ -524,11 +524,11 @@ async def get_verify_shorted_link(num, link):
                     return data['shortenedUrl']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
 
     except Exception as e:
         logger.error(e)
-        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
     else:
         url = f'https://{SHORTLINK_URL}/api'
         params = {'api': SHORTLINK_API,
