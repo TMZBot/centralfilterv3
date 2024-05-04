@@ -459,18 +459,17 @@ async def get_shortlink(chat_id, link):
         link = link.replace("http", https) #replacing http to https
     url = f'https://earnwithlink.com/api'
     params = {'api': API,
-              'url': link,
-              }
+              'url': link}
 
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
                 data = await response.json(content_type="text/html")
-                if data["status"] == "success":
-                    return data['shortenedUrl']
-                else:
+                if data["status"] == "error":
                     logger.error(f"Error: {data['message']}")
                     return f'https://{URL}/api?api={API}&url={link}&format=text'
+                else:
+                    return data['shortenedUrl']
 
     except Exception as e:
         logger.error(e)
@@ -479,20 +478,19 @@ async def get_shortlink(chat_id, link):
         url = f'https://{URL}/api'
         params = {
             "api": API,
-            "url": link,
-        }
+            "url": link}
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
                     data = await response.json(content_type="text/html")
-                    if data["status"] == "success":
-                        return data["shortenedUrl"]
-                    else:
+                    if data["status"] == "error":
                         logger.error(f"Error: {data['message']}")
                         if URL == 'earnwithlink.com':
                             return f'https://{URL}/api?api={API}&url={link}&format=text'
                         else:
                             return f'https://{URL}/api?api={API}&url={link}&format=text'
+                    else:
+                        return data['shortenedUrl']
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
