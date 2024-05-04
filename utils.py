@@ -460,7 +460,7 @@ async def get_shortlink(chat_id, link):
         link = link.replace("http", https)
     url = f'https://{SHORTNER_SITE}/api'
     params = {'api': SHORTNER_API,
-              'url': long_url,
+              'url': link,
               }
     try:
         async with aiohttp.ClientSession() as session:
