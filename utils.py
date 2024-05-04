@@ -460,13 +460,13 @@ async def get_shortlink(chat_id, link):
         link = link.replace("http", https)
     try:
         api_url = f"https://{SHORTNER_SITE}/api?api={SHORTNER_API}&url={urllib.parse.quote(link)}"
-        async with requests.get(api_url) as response:
-            data = await response.json()
-            if data["status"] == "success":
-                return data['shortenedUrl']
-            else:
-                logger.error(f"Error: {data['message']}")
-                return f'https://{SHORTNER_SITE}/api?api={SHORTNER_API}&link={link}'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url) as response:
+                data = await response.json()
+                if data["status"] == "success":
+                    return data['shortenedUrl']
+                else:
+                    return f'https://{SHORTNER_SITE}/api?api={SHORTNER_API}&link={long_url}'
     except Exception as e:
         logger.error(e)
         return f'{SHORTNER_SITE}/api?api={SHORTNER_API}&link={link}'
