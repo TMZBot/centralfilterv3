@@ -474,7 +474,7 @@ async def get_shortlink(chat_id, link):
 
     except Exception as e:
         logger.error(e)
-        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+        return f'{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
     else:
         url = f'https://{SHORTLINK_URL}/api'
         params = {
