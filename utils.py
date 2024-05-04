@@ -1,6 +1,6 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid, ChatAdminRequired
-from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM, SHORTLINK_URL, SHORTLINK_API, LOG_CHANNEL, GRP_LNK, CHNL_LNK, CUSTOM_FILE_CAPTION, IS_VERIFY, VERIFY2_URL, VERIFY2_API
+from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM, SHORTLINK_URL, SHORTLINK_API, LOG_CHANNEL, GRP_LNK, CHNL_LNK, CUSTOM_FILE_CAPTION, IS_VERIFY, VERIFY2_URL, VERIFY2_API, PROTECT_CONTENT, HOW_TO_VERIFY
 from imdb import Cinemagoer 
 import asyncio
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -448,16 +448,16 @@ async def get_shortlink(chat_id, link):
     if 'shortlink' in settings.keys():
         URL = settings['shortlink']
     else:
-        URL = 'vipurl.in'
+        URL = SHORTLINK_URL
     if 'shortlink_api' in settings.keys():
         API = settings['shortlink_api']
     else:
-        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
+        API = SHORTLINK_API
     https = link.split(":")[0] #splitting https or http from link
     if "http" == https: #if https == "http":
         https = "https"
         link = link.replace("http", https) #replacing http to https
-    if URL == "vipurl.in":
+    if URL == "api.shareus.in":
         url = f'https://{URL}/shortLink'
         params = {
             "token": API,
@@ -490,24 +490,24 @@ async def get_shortlink(chat_id, link):
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
-                        if URL == 'earnwithlink.com':
+                        if URL == 'clicksfly.com':
                             return f'https://{URL}/api?api={API}&url={link}'
                         else:
                             return f'https://{URL}/api?api={API}&link={link}'
         except Exception as e:
             logger.error(e)
-            if URL == 'vipurl.in':
+            if URL == 'clicksfly.com':
                 return f'https://{URL}/api?api={API}&url={link}'
             else:
                 return f'https://{URL}/api?api={API}&link={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
-        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
-        URL = 'vipurl.in'
+        API = SHORTLINK_API
+        URL = SHORTLINK_URL
     else:
-        API = '8074c8e3aac2def688551deccad4d1256dd7008e'
-        URL = 'vipurl.in'
+        API = VERIFY2_API
+        URL = VERIFY2_URL
     https = link.split(":")[0]
     if "http" == https:
         https = "https"
@@ -545,13 +545,13 @@ async def get_verify_shorted_link(num, link):
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
-                        if URL == 'vipurl.in':
+                        if URL == 'clicksfly.com':
                             return f'https://{URL}/api?api={API}&url={link}'
                         else:
                             return f'https://{URL}/api?api={API}&link={link}'
         except Exception as e:
             logger.error(e)
-            if URL == 'api.shareus.in':
+            if URL == 'clicksfly.com':
                 return f'https://{URL}/api?api={API}&url={link}'
             else:
                 return f'https://{URL}/api?api={API}&link={link}'
@@ -613,7 +613,7 @@ async def send_all(bot, userid, files, ident):
             ]]
         await bot.send_message(
             chat_id=userid,
-            text="**You are not the member of our @Central_Links Community's Update Channel that is given below so you Don't get the movie file ...\n\nIf you want the movie file, CLICK on then '❆ Join our Updates Channel ❆' Button below and after joining our updates channel, then click on the '↻ Try Again' Button below...\n\nThen You will get the movie files. **",
+            text="**You are not the member of our @Central_Links Community's Update Channel that is given below so you Don't get the movie file ...\n\nIf you want the movie file, CLICK on then '❆ Join our Updates Channel ❆' Button below and after joining our updates channel, then click on the '↻ Try Again' Button below...\n\nThen You will get the movie files.**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
@@ -622,11 +622,11 @@ async def send_all(bot, userid, files, ident):
     if IS_VERIFY and not await check_verification(bot, userid):
         btn = [[
             InlineKeyboardButton("Verify", url=await get_token(bot, userid, f"https://telegram.me/{temp.U_NAME}?start=", 'send_all')),
-            InlineKeyboardButton("Hᴏᴡ Tᴏ Vᴇʀɪғʏ", url=HOW_TO_VERIFY)
+            InlineKeyboardButton("How to Verify", url=HOW_TO_VERIFY)
         ]]
         await bot.send_message(
             chat_id=userid,
-            text="<b>You are not verified\n\nKindly verify to continue so that you can get access of unlimited movies until 12 Hours from now</b>.",
+            text="<b>You are not verified\n\nKindly verify to continue so that you can get access of unlimited movies until 12 Hours from now</b>",
             protect_content=True if PROTECT_CONTENT else False,
             reply_markup=InlineKeyboardMarkup(btn)
         )
