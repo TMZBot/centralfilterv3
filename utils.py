@@ -460,7 +460,7 @@ async def get_shortlink(chat_id, link):
         link = link.replace("http", https)
     try:
         api_url = f"https://{SHORTNER_SITE}/api?api={SHORTNER_API}&url={urllib.parse.quote(link)}"
-        response = await requests.get(api_url)
+        async with requests.get(api_url) as response:
         data = await response.json()
         if data["status"] == "success":
             return data['shortenedUrl']
