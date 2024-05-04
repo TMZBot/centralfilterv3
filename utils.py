@@ -499,7 +499,7 @@ async def get_shortlink(chat_id, link):
             if URL == 'clicksfly.com':
                 return f'https://{URL}/st?api={API}&url={link}'
             else:
-                return us
+                return data["shortenedUrl"]
 
 
 async def get_verify_shorted_link(num, link):
