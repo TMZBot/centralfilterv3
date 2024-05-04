@@ -445,14 +445,14 @@ def humanbytes(size):
 
 async def get_shortlink(chat_id, link):
     settings = await get_settings(chat_id) #fetching settings for group
-    '''if 'shortlink' in settings.keys():
+    if 'shortlink' in settings.keys():
         URL = settings['shortlink']
     else:
         URL = SHORTLINK_URL
     if 'shortlink_api' in settings.keys():
         API = settings['shortlink_api']
     else:
-        API = SHORTLINK_API'''
+        API = SHORTLINK_API
     https = link.split(":")[0] #splitting https or http from link
     if "http" == https: #if https == "http":
         https = "https"
@@ -465,7 +465,7 @@ async def get_shortlink(chat_id, link):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json()
+                data = await response.json(shortenedUrl)
                 if data["status"] == "success":
                     return data['shortenedUrl']
                 else:
@@ -484,7 +484,7 @@ async def get_shortlink(chat_id, link):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
+                    data = await response.json(shortenedUrl)
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
@@ -519,7 +519,7 @@ async def get_verify_shorted_link(num, link):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json()
+                data = await response.json(content_type="text/html")
                 if data["status"] == "success":
                     return data['shortenedUrl']
                 else:
@@ -537,7 +537,7 @@ async def get_verify_shorted_link(num, link):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
+                    data = await response.json(content_type="text/html")
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
