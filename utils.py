@@ -443,8 +443,10 @@ def humanbytes(size):
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
+//460 to 500
+
 async def get_shortlink(chat_id, link):
-    settings = await get_settings(chat_id)  # fetching settings for group
+    settings = await get_settings(chat_id) #fetching settings for group
     if 'shortlink' in settings.keys():
         URL = settings['shortlink']
     else:
@@ -453,35 +455,52 @@ async def get_shortlink(chat_id, link):
         API = settings['shortlink_api']
     else:
         API = SHORTLINK_API
-    https = link.split(":")[0]  # splitting https or http from link
-    if "http" == https:  # if https == "http":
+    https = link.split(":")[0] #splitting https or http from link
+    if "http" == https: #if https == "http":
         https = "https"
-        link = link.replace("http", https)  # replacing http to https
-    url = f'https://earnwithlink.com/api'
-    params = {'api': API,
-              'url': url}
-
-    response = requests.get(url, params=params)
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Check the content type of the response
-        content_type = response.headers.get('content-type')
-        if content_type and 'application/json' in content_type:
-            # If the content type is JSON, parse the response as JSON
-            data = response.json()
-            if 'shortenedUrl' in data:
-                return data['shortenedUrl']
-            else:
-                print("Shortened URL not found in response JSON:", data)
-        else:
-            # If the content type is not JSON, handle it accordingly
-            print("Unexpected content type received:", content_type)
+        link = link.replace("http", https) #replacing http to https
+    if url == "api.shareus.in":
+        url = f'https://{URL}/shortenedUrl'
+        params = {
+            "token": API,
+            "format": "json",
+            "url": link}
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json(content_type="text/html")
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
+        except Exception as e:
+            logger.error(e)
+            return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
     else:
-        print("Error:", response.status_code, response.text)
-
-    # Return None if short link retrieval fails
-    return None
+        url = f'https://{URL}/api'
+        params = {
+            "api": API,
+            "url": link}
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json(content_type="text/html")
+                    if data["status"] == "success":
+                        shortenedUrl = data["shortenedUrl"]
+                        return shortenedUrl
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        if URL == 'clicksfly.com':
+                            return f'https://{URL}/api?api={API}&url={link}'
+                        else:
+                            return f'https://{URL}/api?api={API}&url={link}'
+        except Exception as e:
+            logger.error(e)
+            if URL == 'clicksfly.com':
+                return f'https://{URL}/api?api={API}&url={link}'
+            else:
+                return f'https://{URL}/api?api={API}&url={link}'
 
 
 async def get_verify_shorted_link(num, link):
