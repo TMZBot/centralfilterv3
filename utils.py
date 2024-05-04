@@ -484,7 +484,7 @@ async def get_shortlink(chat_id, link):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    content_type = response.headers.get('content-type', '').split(';')[0]
+                    content_type = response.headers.get('content-type', '').split(',')[0]
                     if content_type == 'application/json':
                         data = await response.json()
                         if data["status"] == "error":
