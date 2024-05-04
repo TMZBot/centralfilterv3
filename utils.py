@@ -485,23 +485,23 @@ async def get_shortlink(chat_id, link):
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
                     content_type = response.headers.get('content-type', '').split(';')[0]
-                if content_type == 'application/json':
-                    data = await response.json()
-                    if data["status"] == "error":
-                        logger.error(f"Error: {data['message']}")
-                        return None
-                    else:
-                        shortened_url = data['shortenedUrl']
+                    if content_type == 'application/json':
+                        data = await response.json()
+                        if data["status"] == "error":
+                            logger.error(f"Error: {data['message']}")
+                            return None
+                        else:
+                            shortened_url = data['shortenedUrl']
                         # Add the shortened URL to the final link
-                        final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                        return shortened_url
-                else:
-                    logger.error(f"Attempt to decode JSON with unexpected mimetype: {content_type}")
-                    return None
+                            final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
+                            return shortened_url
+                    else:
+                        logger.error(f"Attempt to decode JSON with unexpected mimetype: {content_type}")
+                        return None
 
-    except Exception as e:
-        logger.error(e)
-        return None
+        except Exception as e:
+            logger.error(e)
+            return None
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
