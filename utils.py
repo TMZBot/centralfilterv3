@@ -1,6 +1,6 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid, ChatAdminRequired
-from info import *
+from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM, SHORTLINK_URL, SHORTLINK_API, LOG_CHANNEL, GRP_LNK, CHNL_LNK, CUSTOM_FILE_CAPTION, IS_VERIFY, VERIFY2_URL, VERIFY2_API, PROTECT_CONTENT, HOW_TO_VERIFY
 from imdb import Cinemagoer 
 import asyncio
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -443,8 +443,6 @@ def humanbytes(size):
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
-#460 to 500
-
 async def get_shortlink(chat_id, link):
     settings = await get_settings(chat_id) #fetching settings for group
     if 'shortlink' in settings.keys():
@@ -459,49 +457,50 @@ async def get_shortlink(chat_id, link):
     if "http" == https: #if https == "http":
         https = "https"
         link = link.replace("http", https) #replacing http to https
-    if url == "api.shareus.in":
-        url = f'https://{URL}/shortenedUrl'
+    if URL == "api.shareus.in":
+        url = f'https://{URL}/shortLink'
         params = {
             "token": API,
             "format": "json",
-            "url": link}
+            "link": link,
+        }
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
                     data = await response.json(content_type="text/html")
                     if data["status"] == "success":
-                        return data["shortenedUrl"]
+                        return data["shortlink"]
                     else:
                         logger.error(f"Error: {data['message']}")
-                        return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
+                        return f'https://{URL}/shortLink?token={API}&format=json&url={link}'
         except Exception as e:
             logger.error(e)
-            return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
+            return f'https://{URL}/shortLink?token={API}&format=json&url={link}'
     else:
         url = f'https://{URL}/api'
         params = {
             "api": API,
-            "url": link}
+            "url": link
+        }
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json(content_type="text/html")
+                    data = await response.json()
                     if data["status"] == "success":
-                        shortenedUrl = data["shortenedUrl"]
-                        return shortenedUrl
+                        us = data["shortenedUrl"]
+                        return us
                     else:
                         logger.error(f"Error: {data['message']}")
                         if URL == 'clicksfly.com':
-                            return f'https://{URL}/api?api={API}&url={link}'
+                            return f'https://{URL}/st?api={API}&url={link}'
                         else:
-                            return f'https://{URL}/api?api={API}&url={link}'
+                            return f'https://{URL}/st?api={API}&url={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
-                return f'https://{URL}/api?api={API}&url={link}'
+                return f'https://{URL}/st?api={API}&url={link}'
             else:
-                return f'https://{URL}/api?api={API}&url={link}'
-
+                return f'https://{URL}/st?api={API}&url={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
