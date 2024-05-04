@@ -458,47 +458,47 @@ async def get_shortlink(chat_id, link):
         https = "https"
         link = link.replace("http", https) #replacing http to https
     url = f'https://earnwithlink.com/api'
-    params = {'api': SHORTLINK_API,
+    params = {'api': API,
               'url': link,
               }
 
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json(shortenedUrl)
+                data = await response.json(content_type="text/html")
                 if data["status"] == "success":
                     return data['shortenedUrl']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                    return f'https://{URL}/api?api={API}&url={link}'
 
     except Exception as e:
         logger.error(e)
-        return f'{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+        return f'https://{URL}/api?api={API}&url={link}'
     else:
-        url = f'https://{SHORTLINK_URL}/api'
+        url = f'https://{URL}/api'
         params = {
-            "api": SHORTLINK_API,
+            "api": API,
             "url": link,
         }
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json(shortenedUrl)
+                    data = await response.json(content_type="text/html")
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
                         logger.error(f"Error: {data['message']}")
-                        if URL == 'clicksfly.com':
-                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                        if URL == 'earnwithlink.com':
+                            return f'https://{URL}/api?api={API}&url={link}'
                         else:
-                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                            return f'https://{URL}/api?api={API}&url={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
-                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
             else:
-                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
@@ -524,14 +524,14 @@ async def get_verify_shorted_link(num, link):
                     return data['shortenedUrl']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                    return f'https://{URL}/api?api={API}&url={link}'
 
     except Exception as e:
         logger.error(e)
-        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+        return f'https://{URL}/api?api={API}&url={link}'
     else:
-        url = f'https://{SHORTLINK_URL}/api'
-        params = {'api': SHORTLINK_API,
+        url = f'https://{URL}/api'
+        params = {'api': API,
                   'url': link,
                   }
         try:
@@ -543,15 +543,15 @@ async def get_verify_shorted_link(num, link):
                     else:
                         logger.error(f"Error: {data['message']}")
                         if URL == 'clicksfly.com':
-                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                            return f'https://{URL}/api?api={API}&url={link}'
                         else:
-                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                            return f'https://{URL}/api?api={API}&url={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
-                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
             else:
-                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
 
 async def check_token(bot, userid, token):
     user = await bot.get_users(userid)
