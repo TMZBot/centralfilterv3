@@ -457,7 +457,7 @@ async def get_shortlink(chat_id, link):
     if "http" == https:  # if https == "http":
         https = "https"
         link = link.replace("http", https)  # replacing http to https
-    url = f'https://tnshort.net/api'
+    url = f'https://earnwithlink.com/api'
     params = {'api': API,
               'url': link}
 
