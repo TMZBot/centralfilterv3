@@ -457,26 +457,24 @@ async def get_shortlink(chat_id, link):
     if "http" == https: #if https == "http":
         https = "https"
         link = link.replace("http", https) #replacing http to https
-    url = f'https://earnwithlink.com/api'
-    params = {'api': API,
-              'url': link}
-
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json(content_type="text/html")
-                if data["status"] == "error":
-                    logger.error(f"Error: {data['message']}")
-                    return None
-                else:
-                    shortened_url = data['shortenedUrl']
-                    # Add the shortened URL to the final link
-                    final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                    return final_link
-
-    except Exception as e:
-        logger.error(e)
-        return None
+    if URL == "api.shareus.in":
+        url = f'https://{URL}/shortenedUrl'
+        params = {
+            "token": API,
+            "format": "json",
+            "url": link}
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json(content_type="text/html")
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
+        except Exception as e:
+            logger.error(e)
+            return f'https://{URL}/shortenedUrl?token={API}&format=json&url={link}'
     else:
         url = f'https://{URL}/api'
         params = {
@@ -486,20 +484,20 @@ async def get_shortlink(chat_id, link):
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
                     data = await response.json(content_type="text/html")
-                    if data["status"] == "error":
-                        logger.error(f"Error: {data['message']}")
-                        return None
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
                     else:
-                        shortened_url = data['shortenedUrl']
-                    # Add the shortened URL to the final link
-                        final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                        return final_link
+                        logger.error(f"Error: {data['message']}")
+                        if URL == 'clicksfly.com':
+                            return f'https://{URL}/api?api={API}&url={link}'
+                        else:
+                            return f'https://{URL}/api?api={API}&url={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
-                return f'https://{URL}/api?api={API}&url={link}&format=text'
+                return f'https://{URL}/api?api={API}&url={link}'
             else:
-                return f'https://{URL}/api?api={API}&url={link}&format=text'
+                return f'https://{URL}/api?api={API}&url={link}'
 
 async def get_verify_shorted_link(num, link):
     if int(num) == 1:
@@ -509,27 +507,29 @@ async def get_verify_shorted_link(num, link):
         API = VERIFY2_API
         URL = VERIFY2_URL
     https = link.split(":")[0]
-    if "http" == https: #if https == "http":
+    if "http" == https:
         https = "https"
-        link = link.replace("http", https) #replacing http to https
-    url = f'https://earnwithlink.com/api'
-    params = {'api': SHORTLINK_API,
-              'url': link,
-              }
+        link = link.replace("http", https)
 
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json(content_type="text/html")
-                if data["status"] == "success":
-                    return data['shortenedUrl']
-                else:
-                    logger.error(f"Error: {data['message']}")
-                    return f'https://{URL}/api?api={API}&url={link}'
+    if URL == "api.shareus.in":
+        url = f"https://{URL}/shortLink"
+        params = {"token": API,
+                  "format": "json",
+                  "link": link,
+                  }
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json(content_type="text/html")
+                    if data["status"] == "success":
+                        return data["shortlink"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        return f'https://{URL}/shortLink?token={API}&format=json&url={link}'
 
-    except Exception as e:
-        logger.error(e)
-        return f'https://{URL}/api?api={API}&url={link}'
+        except Exception as e:
+            logger.error(e)
+            return f'https://{URL}/shortLink?token={API}&format=json&url={link}'
     else:
         url = f'https://{URL}/api'
         params = {'api': API,
@@ -538,7 +538,7 @@ async def get_verify_shorted_link(num, link):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json(content_type="text/html")
+                    data = await response.json()
                     if data["status"] == "success":
                         return data["shortenedUrl"]
                     else:
