@@ -64,7 +64,7 @@ async def save_group(bot, message):
                                                                          [[
                                                                            InlineKeyboardButton("﹄ Join Updates Channel ﹃", url=CHNL_LNK)
                                                                         ],[
-                                                                           InlineKeyboardButton("✇ How to Search Movies from our Group ? ✇", url="https://telegram.dog/central_tutorial/19")
+                                                                           InlineKeyboardButton("✇ How to Search Movies from our Group ? ✇", url="https://telegram.dog/central_tutorial/22")
                                                                          ]]
                                                  ),
                                                  parse_mode=enums.ParseMode.HTML
