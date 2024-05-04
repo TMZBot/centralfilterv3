@@ -489,11 +489,11 @@ async def get_shortlink(chat_id, link):
                     if data["status"] == "error":
                         logger.error(f"Error: {data['message']}")
                         return None
-                else:
-                    shortened_url = data['shortenedUrl']
+                    else:
+                        shortened_url = data['shortenedUrl']
                     # Add the shortened URL to the final link
-                    final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                    return final_link
+                        final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
+                        return final_link
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
