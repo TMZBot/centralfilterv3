@@ -1,6 +1,6 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid, ChatAdminRequired
-from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM, SHORTLINK_URL, SHORTLINK_API, LOG_CHANNEL, GRP_LNK, CHNL_LNK, CUSTOM_FILE_CAPTION, IS_VERIFY, VERIFY2_URL, VERIFY2_API, PROTECT_CONTENT, HOW_TO_VERIFY
+from info import *
 from imdb import Cinemagoer 
 import asyncio
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -17,7 +17,6 @@ from typing import List
 from database.users_chats_db import db
 from bs4 import BeautifulSoup
 import requests
-import urllib.parse
 import aiohttp
 
 logger = logging.getLogger(__name__)
@@ -447,35 +446,113 @@ def humanbytes(size):
 async def get_shortlink(chat_id, link):
     settings = await get_settings(chat_id) #fetching settings for group
     if 'shortlink' in settings.keys():
-        SHORTNER_SITE = settings['shortlink']
+        URL = settings['shortlink']
     else:
-        SHORTNER_SITE = SHORTLINK_URL
+        URL = SHORTLINK_URL
     if 'shortlink_api' in settings.keys():
-        SHORTNER_API = settings['shortlink_api']
+        API = settings['shortlink_api']
     else:
-        SHORTNER_API = SHORTLINK_API
-    https = link.split(":")[0]
-    if "http" == https:
+        API = SHORTLINK_API
+    https = link.split(":")[0] #splitting https or http from link
+    if "http" == https: #if https == "http":
         https = "https"
-        link = link.replace("http", https)
-    url = f'https://{SHORTNER_SITE}/api'
-    params = {'api': SHORTNER_API,
+        link = link.replace("http", https) #replacing http to https
+    url = f'https://earnwithlink.com/api'
+    params = {'api': SHORTLINK_API,
               'url': link,
               }
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json()
-                if data["status"] == "success":
-                    return data['shortenedUrl']
-                else:
-                    logger.error(f"Error: {data['message']}")
-                    return f'https://{SHORTNER_SITE}/api?api={SHORTNER_API}&link={link}'
 
-    except Exception as e:
-        logger.error(e)
-        return f'{SHORTNER_SITE}/api?api={SHORTNER_API}&link={link}'
-        
+    try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json()
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+                        
+        except Exception as e:
+            logger.error(e)
+            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+    else:
+        url = f'https://{SHORTLINK_URL}/api'
+        params = {
+            "api": SHORTLINK_API,
+            "url": link,
+        }
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json()
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        if URL == 'clicksfly.com':
+                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                        else:
+                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+        except Exception as e:
+            logger.error(e)
+            if URL == 'clicksfly.com':
+                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+            else:
+                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+
+async def get_verify_shorted_link(num, link):
+    if int(num) == 1:
+        API = SHORTLINK_API
+        URL = SHORTLINK_URL
+    else:
+        API = VERIFY2_API
+        URL = VERIFY2_URL
+    https = link.split(":")[0]
+    if "http" == https: #if https == "http":
+        https = "https"
+        link = link.replace("http", https) #replacing http to https
+    url = f'https://earnwithlink.com/api'
+    params = {'api': SHORTLINK_API,
+              'url': link,
+              }
+
+    try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json()
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+                        
+        except Exception as e:
+            logger.error(e)
+            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&link={link}'
+    else:
+        url = f'https://{SHORTLINK_URL}/api'
+        params = {'api': SHORTLINK_API,
+                  'url': link,
+                  }
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json()
+                    if data["status"] == "success":
+                        return data["shortenedUrl"]
+                    else:
+                        logger.error(f"Error: {data['message']}")
+                        if URL == 'clicksfly.com':
+                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+                        else:
+                            return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+        except Exception as e:
+            logger.error(e)
+            if URL == 'clicksfly.com':
+                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+            else:
+                return f'https://{SHORTLINK_URL}/api?api={SHORTLINK_API}&url={link}'
+
 async def check_token(bot, userid, token):
     user = await bot.get_users(userid)
     if not await db.is_user_exist(user.id):
