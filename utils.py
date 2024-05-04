@@ -459,29 +459,29 @@ async def get_shortlink(chat_id, link):
         link = link.replace("http", https)  # replacing http to https
     url = f'https://earnwithlink.com/api'
     params = {'api': API,
-              'url': link}
+              'url': url}
 
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                content_type = response.headers.get('content-type', '').split(';')[0]
-                if content_type == 'application/json':
-                    data = await response.json()
-                    if data["status"] == "error":
-                        logger.error(f"Error: {data['message']}")
-                        return None
-                    else:
-                        shortened_url = data['shortenedUrl']
-                        # Add the shortened URL to the final link
-                        final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
-                        return shortened_url
-                else:
-                    logger.error(f"Attempt to decode JSON with unexpected mimetype: {content_type}")
-                    return None
+    response = requests.get(api_url, params=params)
 
-    except Exception as e:
-        logger.error(e)
-        return None
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Check the content type of the response
+        content_type = response.headers.get('content-type')
+        if content_type and 'application/json' in content_type:
+            # If the content type is JSON, parse the response as JSON
+            data = response.json()
+            if 'shortenedUrl' in data:
+                return data['shortenedUrl']
+            else:
+                print("Shortened URL not found in response JSON:", data)
+        else:
+            # If the content type is not JSON, handle it accordingly
+            print("Unexpected content type received:", content_type)
+    else:
+        print("Error:", response.status_code, response.text)
+
+    # Return None if short link retrieval fails
+    return None
 
 
 async def get_verify_shorted_link(num, link):
