@@ -499,18 +499,7 @@ async def get_shortlink(chat_id, link):
             if URL == 'clicksfly.com':
                 return f'https://{URL}/st?api={API}&url={link}'
             else:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                        data = await response.json()
-                        if data["status"] == "success":
-                            us = data["shortenedUrl"]
-                            return us
-                        else:
-                            logger.error(f"Error: {data['message']}")
-                            if URL == 'clicksfly.com':
-                                return f'https://{URL}/st?api={API}&url={link}'
-                            else:
-                                return f'https://{URL}/st?api={API}&url={link}'
+                return f'https://{URL}/st?api={API}&url={link}'
 
 
 async def get_verify_shorted_link(num, link):
