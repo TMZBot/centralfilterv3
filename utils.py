@@ -467,13 +467,16 @@ async def get_shortlink(chat_id, link):
                 data = await response.json(content_type="text/html")
                 if data["status"] == "error":
                     logger.error(f"Error: {data['message']}")
-                    return f'https://{URL}/api?api={API}&url={link}&format=text'
+                    return None
                 else:
-                    return data['shortenedUrl']
+                    shortened_url = data['shortenedUrl']
+                    # Add the shortened URL to the final link
+                    final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
+                    return final_link
 
     except Exception as e:
         logger.error(e)
-        return f'https://{URL}/api?api={API}&url={link}&format=text'
+        return None
     else:
         url = f'https://{URL}/api'
         params = {
@@ -485,12 +488,12 @@ async def get_shortlink(chat_id, link):
                     data = await response.json(content_type="text/html")
                     if data["status"] == "error":
                         logger.error(f"Error: {data['message']}")
-                        if URL == 'earnwithlink.com':
-                            return f'https://{URL}/api?api={API}&url={link}&format=text'
-                        else:
-                            return f'https://{URL}/api?api={API}&url={link}&format=text'
-                    else:
-                        return data['shortenedUrl']
+                        return None
+                else:
+                    shortened_url = data['shortenedUrl']
+                    # Add the shortened URL to the final link
+                    final_link = f"https://{URL}/api?api={API}&url={shortened_url}"
+                    return final_link
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
