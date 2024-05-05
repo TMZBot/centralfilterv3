@@ -491,15 +491,15 @@ async def get_shortlink(chat_id, link):
                     else:
                         logger.error(f"Error: {data['message']}")
                         if URL == 'clicksfly.com':
-                            return f'https://{URL}/st?api={API}&url={link}'
+                            return f'https://{URL}/api?api={API}&url={link}'
                         else:
-                            return f'https://{URL}/st?api={API}&url={link}'
+                            return f'https://{URL}/api?api={API}&url={link}'
         except Exception as e:
             logger.error(e)
             if URL == 'clicksfly.com':
-                return f'https://{URL}/st?api={API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
             else:
-                return f'https://{URL}/st?api={API}&url={link}'
+                return f'https://{URL}/api?api={API}&url={link}'
 
 
 async def get_verify_shorted_link(num, link):
