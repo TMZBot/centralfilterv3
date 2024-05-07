@@ -247,7 +247,7 @@ async def next_page(bot, query):
                 ],
             )
     btn.insert(0, [
-        InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_tutorial/22")
+        InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_tutorial/21")
     ])
     btn.insert(0, [
         InlineKeyboardButton("﹄ Select Your Required Language ﹃", callback_data=f"select_lang#{req}")
@@ -361,7 +361,7 @@ async def language_check(bot, query):
             )
         
         btn.insert(0, [
-            InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_tutorial/22")
+            InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_tutorial/21")
         ])
         btn.insert(0, [
             InlineKeyboardButton("﹄ Select Your Required Language ﹃", callback_data=f"select_lang#{userid}")
@@ -1625,7 +1625,7 @@ async def auto_filter(client, msg, spoll=False):
         )
 
     btn.insert(0, [
-        InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_Tutorial/22")
+        InlineKeyboardButton("❗ How to Download ❗", url=f"https://telegram.dog/Central_Tutorial/21")
     ])
     btn.insert(0, [
         InlineKeyboardButton("﹄ Select your required Languages ﹃", callback_data=f"select_lang#{message.from_user.id}")
